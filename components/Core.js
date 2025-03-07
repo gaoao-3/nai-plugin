@@ -73,7 +73,7 @@ const headers = {
 
 const defaultParam = {
   "txt2img": {
-    "input": "{{artist:arata_(xin)}},artist:mignon,[artist:kedama milk],[artist:egami],artist:soso,",
+    "input": "[artist:arata_(xin)],artist:nedia,[artist:kedama milk],[artist:egami],artist:soso,",
     "model": "nai-diffusion-4-full",
     "action": "generate",
     "parameters": {
@@ -82,7 +82,7 @@ const defaultParam = {
       "height": 1216,
       "scale": 6,
       "sampler": "k_euler_ancestral",
-      "steps": 28,
+      "steps": 30,
       "seed": 255374418,
       "n_samples": 1,
       "ucPreset": 0,
@@ -99,7 +99,7 @@ const defaultParam = {
       "characterPrompts": [],
       "v4_prompt": {
         "caption": {
-          "base_caption": "{{artist:arata_(xin)}},artist:mignon,[artist:kedama milk],[artist:egami],artist:soso,",
+          "base_caption": "[artist:arata_(xin)],artist:nedia,[artist:kedama milk],[artist:egami],artist:soso,",
           "char_captions": []
         },
         "use_coords": false,

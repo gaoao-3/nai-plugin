@@ -73,7 +73,7 @@ const headers = {
 
 const defaultParam = {
   "txt2img": {
-    "input": "{artist:arata_(xin)},artist:mignon,[artist:kedama milk],[artist:ask_(askzy)],artist:wanke,artist:wlop,artist:fujiyama,",
+    "input": "{{artist:arata_(xin)}},artist:mignon,[artist:kedama milk],[artist:egami],artist:soso,artist:wlop,artist:fujiyama,",
     "model": "nai-diffusion-4-full",
     "action": "generate",
     "parameters": {
@@ -99,7 +99,7 @@ const defaultParam = {
       "characterPrompts": [],
       "v4_prompt": {
         "caption": {
-          "base_caption": "{artist:arata_(xin)},artist:mignon,[artist:kedama milk],[artist:ask_(askzy)],artist:wanke,artist:wlop,artist:fujiyama,",
+          "base_caption": "{{artist:arata_(xin)}},artist:mignon,[artist:kedama milk],[artist:egami],artist:soso,artist:wlop,artist:fujiyama,",
           "char_captions": []
         },
         "use_coords": false,

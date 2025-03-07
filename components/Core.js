@@ -73,7 +73,7 @@ const headers = {
 
 const defaultParam = {
   "txt2img": {
-    "input": "[artist:ciloranko],artist:kazutake_hazano,[artist:kedama milk],[artist:ask_(askzy)],artist:wanke,artist:wlop,artist:fujiyama,",
+    "input": "{artist:arata_(xin)},artist:mignon,[artist:kedama milk],[artist:ask_(askzy)],artist:wanke,artist:wlop,artist:fujiyama,",
     "model": "nai-diffusion-4-full",
     "action": "generate",
     "parameters": {
@@ -99,7 +99,7 @@ const defaultParam = {
       "characterPrompts": [],
       "v4_prompt": {
         "caption": {
-          "base_caption": "[artist:ciloranko],artist:kazutake_hazano,[artist:kedama milk],[artist:ask_(askzy)],artist:wanke,artist:wlop,artist:fujiyama,",
+          "base_caption": "{artist:arata_(xin)},artist:mignon,[artist:kedama milk],[artist:ask_(askzy)],artist:wanke,artist:wlop,artist:fujiyama,",
           "char_captions": []
         },
         "use_coords": false,
@@ -107,11 +107,11 @@ const defaultParam = {
       },
       "v4_negative_prompt": {
         "caption": {
-          "base_caption": "nsfw, lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, artistic error, username, scan, [abstract]",
+          "base_caption": "nsfw, lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, artistic error, username, scan, [abstract], bad anatomy, bad hands, text, missing fingers, extra digit, fewer digits, cropped, normal quality, blurry, bad feet",
           "char_captions": []
         }
       },
-      "negative_prompt": "nsfw, lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, artistic error, username, scan, [abstract]",
+      "negative_prompt": "nsfw, lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, artistic error, username, scan, [abstract], bad anatomy, bad hands, text, missing fingers, extra digit, fewer digits, cropped, normal quality, blurry, bad feet",
       "reference_image_multiple": [],
       "reference_information_extracted_multiple": [],
       "reference_strength_multiple": [],

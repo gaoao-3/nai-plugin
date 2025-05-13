@@ -1,6 +1,6 @@
 import plugin from '../../../lib/plugins/plugin.js'
 
-export class preset extends plugin {
+export class Preset extends plugin {
     constructor() {
         super({
             name: 'nai-预设',
@@ -9,7 +9,7 @@ export class preset extends plugin {
             priority: 1009,
             rule: [
                 {
-                    reg: '^[/#]pset(?: --(add|find|del))?(?:\\s+(.*))?$',
+                    reg: '^[/#]pset(?: --(add|find|del))?(?:\\s+([\\s\\S]*))?$',
                     fnc: 'preset'
                 }
             ]

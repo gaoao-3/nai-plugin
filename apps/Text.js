@@ -12,14 +12,14 @@ export class Text extends plugin {
       event: 'message',
       priority: 1009,
       rule: [{
-        reg: '^[/#]draw(.*)',
+        reg: '^[/#]draw([\\s\\S]*)',
         fnc: 'text'
       }]
     })
   }
 
   async text(e) {
-    if (!queue.list.length) return e.reply('无可用Token\n- 请先添加Token后使用该功能\n- 使用「/nai reload」指令刷新已经配置的Token')
+    if (!queue.list.length) return e.reply('无可用Token\n- 请先添加Token后使用该功能\n- 使用「/nai --reload」指令刷新已经配置的Token')
 
     let msg = e.msg.match(this.rule[0].reg)[1]
     await redis.set(`nai:again:${e.user_id}`, JSON.stringify({
@@ -28,12 +28,10 @@ export class Text extends plugin {
       type: 'text'
     }))
 
-    const preset = JSON.parse(await redis.get(`nai:preset:${e.user_id}`)) || {}
-    for (const key in preset) {
-      if (msg.includes(key)) {
-        msg = msg.replace(key, preset[key])
-      }
-    }
+    const preset = JSON.parse(await redis.get(`nai:preset:${e.user_id}`)) || {};
+    msg = Object.entries(preset)
+      .sort(([a], [b]) => b.length - a.length)
+      .reduce((s, [k, v]) => s.replace(new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), v), msg);
 
     try {
       const param = await handle(msg)

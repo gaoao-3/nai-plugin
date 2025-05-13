@@ -1,5 +1,6 @@
 novelai_token: []
 use_token: 0
+model: nai-diffusion-4-full
 proxy:
   enable: false
   host: 127.0.0.1
@@ -9,9 +10,9 @@ reverse_proxy:
   user_url: https://api.novelai.net
 translate:
   engine: null
-  gemini:
-    base_url: https://generativelanguage.googleapis.com
-    model: gemini-2.0-flash
+  openai:
+    base_url: https://api.openai.com/v1
+    model: gpt-4o-mini
     apikey: null
   baidu:
     appid: null

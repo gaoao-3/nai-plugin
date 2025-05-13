@@ -13,14 +13,14 @@ export class Image extends plugin {
       event: 'message',
       priority: 1009,
       rule: [{
-        reg: '^[/#]image(.*)',
+        reg: '^[/#]image([\\s\\S]*)',
         fnc: 'image'
       }]
     })
   }
 
   async image(e) {
-    if (!queue.list.length) return e.reply('无可用Token\n- 请先添加Token后使用该功能\n- 使用「/nai reload」指令刷新已经配置的Token')
+    if (!queue.list.length) return e.reply('无可用Token\n- 请先添加Token后使用该功能\n- 使用「/nai --reload」指令刷新已经配置的Token')
     if (!e.img) return e.reply('请携带图片发送指令')
 
     let msg = e.msg.match(this.rule[0].reg)[1]
@@ -30,27 +30,23 @@ export class Image extends plugin {
       type: 'image'
     }))
 
-    const preset = JSON.parse(await redis.get(`nai:preset:${e.user_id}`)) || {}
-    for (const key in preset) {
-      if (msg.includes(key)) {
-        msg = msg.replace(key, preset[key])
-      }
-    }
+    const preset = JSON.parse(await redis.get(`nai:preset:${e.user_id}`)) || {};
+    msg = Object.entries(preset)
+      .sort(([a], [b]) => b.length - a.length)
+      .reduce((s, [k, v]) => s.replace(new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), v), msg);
 
     try {
       const param = await handle(msg)
       const buffer = Buffer.from(await url2Base64(e.img[0]), 'base64')
 
       let { width, height } = sizeOf(buffer)
-      const scale = Math.max(width / 1024, height / 1024)
-      const resize = (v, s) => Math.floor((s > 1 ? v / s : v) / 64) * 64
 
       param.parameters = {
         ...param.parameters,
         image: await url2Base64(e.img[0]),
         ...(e.img[1] && { reference_image: await url2Base64(e.img[1]) }),
-        width: resize(width, scale),
-        height: resize(height, scale),
+        width: width,
+        height: height,
         extra_noise_seed: param.parameters.seed
       }
 

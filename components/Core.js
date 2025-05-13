@@ -43,14 +43,14 @@ const commonParameters = {
 const defaultParam = {
   text: {
     input: "",
-    model: "nai-diffusion-4-full",
+    model: await Config.getConfig().model,
     action: "generate",
     parameters: commonParameters
   },
   image: {
     input: "",
-    model: "nai-diffusion-4-full",
-    action: "image",
+    model: await Config.getConfig().model,
+    action: "img2img",
     parameters: {
       ...commonParameters,
       strength: 0.7,
@@ -72,20 +72,34 @@ async function getPicture(param, user, type, token) {
   const { base_url } = Config.getConfig().reverse_proxy;
   const mergeData = _.merge({}, defaultParam[type], param);
 
-  logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`用户 ${user} 参数：`), mergeData);
-
   const { free_mode, proxy } = Config.getConfig();
   const agent = proxy.enable && new HttpsProxyAgent(`http://${proxy.host}:${proxy.port}`);
 
-  const { width, height } = mergeData.parameters;
+  const roundTo64 = v => Math.round(v / 64) * 64 || 64;
+  let width = roundTo64(mergeData.parameters.width);
+  let height = roundTo64(mergeData.parameters.height);
 
-  if ((width * height) > (free_mode ? 1048576 : 3145728)) {
-    throw new Error(
-      free_mode
-        ? '图像尺寸超过免费模式限制，请减小图像尺寸，或关闭免费模式'
-        : '图像尺寸超过限制，请减小图像尺寸'
-    );
+  const maxArea = free_mode ? 1048576 : 3145728;
+  let area = width * height;
+  if (area > maxArea) {
+    const ratio = width / height;
+    const scale = Math.sqrt(maxArea / area);
+    width = roundTo64(width * scale);
+    height = roundTo64(width / ratio);
+
+    while ((width * height) > maxArea) {
+      width -= 64;
+      height = roundTo64(width / ratio);
+    }
   }
+  mergeData.parameters.width = Math.max(width, 64);
+  mergeData.parameters.height = Math.max(height, 64);
+
+  if (free_mode) {
+    mergeData.parameters.steps = Math.min(mergeData.parameters.steps, 28);
+  }
+
+  logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`用户 ${user} 参数：`), mergeData);
 
   try {
     const response = await axios.post(`${base_url}/ai/generate-image`, mergeData, {
